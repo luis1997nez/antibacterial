@@ -6,7 +6,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/*
 import com.antivacterial.Interface.Api;
 import com.antivacterial.Model.Posts;
 import com.google.gson.Gson;
@@ -19,7 +37,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
+*/
 public class panel extends AppCompatActivity {
     private TextView nombre;
     private TextView estado;
@@ -27,28 +45,28 @@ public class panel extends AppCompatActivity {
     private TextView resultado;
     private Switch interruptor;
 
+    private RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_panel);
-        /*
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://http://silvermoonmx.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        Api api = retrofit.create(Api.class);*/
 
         nombre = findViewById(R.id.idApp);
         estado = findViewById(R.id.idEstado);
         usos = findViewById(R.id.idUsos);
         interruptor = findViewById(R.id.idSwitch);
         resultado = findViewById(R.id.idResultado);
-        getPosts();
-        //updatePost(String estado);
+
+        //getPosts();
+
+        //-----------------------
+
+        queue = Volley.newRequestQueue(this);
+        obtenerDatosVolley();
     }
 
+    /*
     private void getPosts(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://silvermoonmx.com/")
@@ -92,9 +110,9 @@ public class panel extends AppCompatActivity {
             }
         });
 
-    }
+    }*/
 
-
+    /*
     public void onclick(View view) {
         String estados;
         if(view.getId()==R.id.idSwitch){
@@ -108,8 +126,6 @@ public class panel extends AppCompatActivity {
             }
         }
     }
-
-
 
     //PUT y PATCH
     private void updatePost(String estados){
@@ -133,10 +149,7 @@ public class panel extends AppCompatActivity {
             @Override
             public void onResponse(Call<Posts> call, Response<Posts> response) {
 
-
                 Posts postResponse = response.body();
-
-                /*
 
                 String content = "";
                 String content2 = "";
@@ -146,7 +159,7 @@ public class panel extends AppCompatActivity {
                 content3 += postResponse.getTimes();
                 nombre.setText(content);
                 estado.setText(content2);
-                usos.setText(content3);*/
+                usos.setText(content3);
 
             }
 
@@ -156,7 +169,66 @@ public class panel extends AppCompatActivity {
             }
         });
 
+    }*/
+
+    //-----------------
+
+
+
+    private void obtenerDatosVolley(){
+
+        String url = "http://silvermoonmx.com/public/dispensadores";
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    JSONArray mJsonArray = response.getJSONArray("data");
+
+                    for(int i = 0; i<mJsonArray.length(); i++){
+                        JSONObject mJsonObject = mJsonArray.getJSONObject(i);
+                        String name = mJsonObject.getString("name");
+                        String descrip = mJsonObject.getString("description");
+                        String times = mJsonObject.getString("times");
+
+                        nombre.setText(name);
+                        estado.setText(descrip);
+                        usos.setText(times);
+                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        queue.add(request);
+
     }
 
+    public void onclick(View view) {
+        String estados;
+        if(view.getId()==R.id.idSwitch){
+            if(interruptor.isChecked()){
+                estados = "Encendido";
+                updatePost(estados);
 
+            }else{
+                estados = "Apagado";
+                updatePost(estados);
+            }
+        }
+    }
+
+    private void updatePost(String estados){
+
+    }
 }

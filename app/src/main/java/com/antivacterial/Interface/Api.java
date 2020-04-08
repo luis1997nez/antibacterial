@@ -4,16 +4,18 @@ import com.antivacterial.Model.Posts;
 
 import java.util.List;
 
+/*
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.PUT;
-import retrofit2.http.Path;
+import retrofit2.http.Path;*/
 
 public interface Api {
 
-    @GET("public/dispensadores")
+    /*
+    @GET("public/dispensadores/1")
     Call<List<Posts>> getPosts();
 
     @PUT("public/dispensadores/{id}")
@@ -21,5 +23,5 @@ public interface Api {
 
     @PATCH("public/dispensadores/{id}")
     Call<Posts> patchPost(@Path("id") int id, @Body Posts post );
-
+    */
 }

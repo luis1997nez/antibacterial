@@ -8,9 +8,7 @@ public class Posts {
     private int times;
 
     public Posts(String description) {
-        //this.name = name;
         this.description = description;
-        //this.times = times;
     }
 
     public int getId() {
