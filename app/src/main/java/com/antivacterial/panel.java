@@ -3,6 +3,7 @@ package com.antivacterial;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -214,21 +215,92 @@ public class panel extends AppCompatActivity {
 
     }
 
+
     public void onclick(View view) {
         String estados;
         if(view.getId()==R.id.idSwitch){
             if(interruptor.isChecked()){
                 estados = "Encendido";
-                updatePost(estados);
+                insertarPost(estados);
 
             }else{
                 estados = "Apagado";
-                updatePost(estados);
+                insertarPost(estados);
             }
         }
     }
 
-    private void updatePost(String estados){
+    private void insertarPost(final String estado){
 
+        String url = "http://silvermoonmx.com/public/dispensadores/1";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+                obtenerDatosVolley();
+                Toast.makeText(getApplication(), response, Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error){
+                Toast.makeText(panel.this, error+"No conectado", Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError{
+                Map<String, String> params = new HashMap<String, String>();
+
+                //params.put("name","Dispensador Pro");
+                params.put("description",estado);
+                return params;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+/*
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+
+            @Override
+            public void onResponse(String response) {
+
+                Log.d("Response", response);
+
+            }
+        },  new Response.ErrorListener(){
+
+                    @Override
+
+                    public void onErrorResponse(VolleyError error) {
+
+                       // Log.d("Error.Response", response);
+
+                    }
+
+                }
+
+        ) {
+
+            @Override
+
+            protected Map<String, String> getParams()
+
+            {
+
+                Map<String, String> params = new HashMap<String, String>();
+
+                params.put("name", "Dispensador Pro");
+                params.put("description", "encendido");
+                params.put("time", "1");
+                //params.put("domain", "appsolzone");
+
+                return params;
+
+            }
+
+        };
+
+        queue.add(postRequest);
+*/
     }
 }
