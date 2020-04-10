@@ -67,7 +67,7 @@ public class panel extends AppCompatActivity {
         obtenerDatosVolley();
     }
 
-    /*
+    /* Código de la librería Retrofit
     private void getPosts(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://silvermoonmx.com/")
@@ -258,49 +258,6 @@ public class panel extends AppCompatActivity {
         };
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
-/*
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
 
-            @Override
-            public void onResponse(String response) {
-
-                Log.d("Response", response);
-
-            }
-        },  new Response.ErrorListener(){
-
-                    @Override
-
-                    public void onErrorResponse(VolleyError error) {
-
-                       // Log.d("Error.Response", response);
-
-                    }
-
-                }
-
-        ) {
-
-            @Override
-
-            protected Map<String, String> getParams()
-
-            {
-
-                Map<String, String> params = new HashMap<String, String>();
-
-                params.put("name", "Dispensador Pro");
-                params.put("description", "encendido");
-                params.put("time", "1");
-                //params.put("domain", "appsolzone");
-
-                return params;
-
-            }
-
-        };
-
-        queue.add(postRequest);
-*/
     }
 }
